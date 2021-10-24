@@ -60,8 +60,8 @@ const renderContent = () => {
     return (
       <div className="connect-wallet-container">
         <img
-          src="https://64.media.tumblr.com/tumblr_mbia5vdmRd1r1mkubo1_500.gifv"
-          alt="Monty Python Gif"
+            src="https://c.tenor.com/pjLsAVyJPwwAAAAd/diablo-ii-remaster-resurrected.gif"
+            alt="D2 Diablo gif"
         />
         <button
           className="cta-button connect-wallet-button"
@@ -126,10 +126,6 @@ const renderContent = () => {
           <p className="sub-text">Team up to protect the Metaverse from Diablo!</p>
         </div>
         <div className="connect-wallet-container">
-          <img
-            src="https://c.tenor.com/pjLsAVyJPwwAAAAd/diablo-ii-remaster-resurrected.gif"
-            alt="D2 Diablo gif"
-          />
                       {/*
              * Button that we will use to trigger wallet connect
              * Don't forget to add the onClick event to call your method!
