@@ -1,6 +1,8 @@
 import React, { useEffect, setCurrentAccount, useState } from 'react';
 import './App.css';
 import SelectCharacter from './Components/SelectCharacter';
+import { CONTRACT_ADDRESS } from './constants';
+import { ethers } from 'ethers';
 import twitterLogo from './assets/twitter-logo.svg';
 
 // Constants
