@@ -1,4 +1,4 @@
-import myEpicGame from './utils/MyEpicGame.json';
+import MyEpicGame from './utils/MyEpicGame.json';
 import React, { useEffect, setCurrentAccount, useState } from 'react';
 import './App.css';
 import SelectCharacter from './Components/SelectCharacter';
@@ -135,7 +135,7 @@ useEffect(() => {
     const signer = provider.getSigner();
     const gameContract = new ethers.Contract(
       CONTRACT_ADDRESS,
-      myEpicGame.abi,
+      MyEpicGame.abi,
       signer
     );
 
