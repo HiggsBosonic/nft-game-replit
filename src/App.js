@@ -63,9 +63,7 @@ const [isLoading, setIsLoading] = useState(false);
 
 // Render Methods
 const renderContent = () => {
-    if (isLoading) {
-    return <LoadingIndicator />;
-  }
+
   /*
    * Scenario #1
    */
