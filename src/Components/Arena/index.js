@@ -7,7 +7,7 @@ import './Arena.css';
 /*
  * We pass in our characterNFT metadata so we can a cool card in our UI
  */
-const Arena = ({ characterNFT }) => {
+const Arena = ({ characterNFT, setCharacterNFT }) => {
   // State
   const [gameContract, setGameContract] = useState(null);
 // Actions
@@ -36,24 +36,51 @@ const runAttackAction = async () => {
   }
 };
 
-// UseEffects
-useEffect(() => {
-  /*
-   * Setup async function that will get the boss from our contract and sets in state
-   */
-  const fetchBoss = async () => {
-    const bossTxn = await gameContract.getBigBoss();
-    console.log('Boss:', bossTxn);
-    setBoss(transformCharacterData(bossTxn));
-  };
+    // UseEffects
+    useEffect(() => {
+        const fetchBoss = async () => {
+            const bossTxn = await gameContract.getBigBoss();
+            console.log('Boss:', bossTxn);
+            setBoss(transformCharacterData(bossTxn));
+        };
 
-  if (gameContract) {
-    /*
-     * gameContract is ready to go! Let's fetch our boss
-     */
-    fetchBoss();
-  }
-}, [gameContract]);
+        /*
+        * Setup logic when this event is fired off
+        */
+        const onAttackComplete = (newBossHp, newPlayerHp) => {
+            const bossHp = newBossHp.toNumber();
+            const playerHp = newPlayerHp.toNumber();
+
+            console.log(`AttackComplete: Boss Hp: ${bossHp} Player Hp: ${playerHp}`);
+
+            /*
+            * Update both player and boss Hp
+            */
+            setBoss((prevState) => {
+                return { ...prevState, hp: bossHp };
+            });
+
+            setCharacterNFT((prevState) => {
+                return { ...prevState, hp: playerHp };
+            });
+        };
+
+        if (gameContract) {
+            fetchBoss();
+            gameContract.on('AttackComplete', onAttackComplete);
+        }
+
+        /*
+        * Make sure to clean up this event when this component is removed
+        */
+        return () => {
+            if (gameContract) {
+                gameContract.off('AttackComplete', onAttackComplete);
+            }
+        }
+    }, [gameContract]);
+
+
 
 
   // UseEffects
@@ -81,7 +108,8 @@ return (
     {/* Boss */}
     {boss && (
       <div className="boss-container">
-        <div className={`boss-content`}>
+        {/* Add attackState to the className! After all, it's just class names */}
+        <div className={`boss-content ${attackState}`}>
           <h2>🔥 {boss.name} 🔥</h2>
           <div className="image-content">
             <img src={boss.imageURI} alt={`Boss ${boss.name}`} />

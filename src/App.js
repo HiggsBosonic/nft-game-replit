@@ -18,6 +18,11 @@ const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [characterNFT, setCharacterNFT] = useState(null);
   /*
+* New state property added here
+*/
+const [isLoading, setIsLoading] = useState(false);
+  
+  /*
    * Start by creating a new action that we will run on component load
    */
   // Actions
@@ -84,7 +89,8 @@ const renderContent = () => {
 	* If there is a connected wallet and characterNFT, it's time to battle!
 	*/
   } else if (currentAccount && characterNFT) {
-    return <Arena characterNFT={characterNFT} />;
+    return <Arena characterNFT={characterNFT}
+    setCharacterNFT={setCharacterNFT} />;
   }
 }; 
 
