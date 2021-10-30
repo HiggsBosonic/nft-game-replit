@@ -3,6 +3,8 @@ import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, transformCharacterData } from '../../constants';
 import myEpicGame from '../../utils/MyEpicGame.json';
 import './Arena.css';
+import LoadingIndicator from '../LoadingIndicator';
+
 
 /*
  * We pass in our characterNFT metadata so we can a cool card in our UI
@@ -20,6 +22,11 @@ const [boss, setBoss] = useState(null);
 */
 const [attackState, setAttackState] = useState('');
 
+/*
+* Toast state management
+*/
+const [showToast, setShowToast] = useState(false);
+
 const runAttackAction = async () => {
   try {
     if (gameContract) {
@@ -29,6 +36,13 @@ const runAttackAction = async () => {
       await attackTxn.wait();
       console.log('attackTxn:', attackTxn);
       setAttackState('hit');
+            /*
+      * Set your toast state to true and then false 5 seconds later
+      */
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
     }
   } catch (error) {
     console.error('Error attacking boss:', error);
@@ -105,6 +119,12 @@ const runAttackAction = async () => {
   
 return (
   <div className="arena-container">
+   {/* Add your toast HTML right here */}
+    {boss && (
+      <div id="toast" className="show">
+        <div id="desc">{`💥 ${boss.name} was hit for ${characterNFT.attackDamage}!`}</div>
+      </div>
+    )}
     {/* Boss */}
     {boss && (
       <div className="boss-container">
@@ -124,6 +144,13 @@ return (
             {`💥 Attack ${boss.name}`}
           </button>
         </div>
+              {/* Add this right under your attack button */}
+      {attackState === 'attacking' && (
+        <div className="loading-indicator">
+          <LoadingIndicator />
+          <p>Attacking ⚔️</p>
+        </div>
+      )}
       </div>
     )}
 

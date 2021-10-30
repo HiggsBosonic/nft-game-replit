@@ -10,18 +10,34 @@ import MyEpicGame from '../../utils/MyEpicGame.json';
 const SelectCharacter = ({ setCharacterNFT }) => {
   const [characters, setCharacters] = useState([]);
   const [gameContract, setGameContract] = useState(null);
+/*
+ * New minting state property we will be using
+ */
+const [mintingCharacter, setMintingCharacter] = useState(false);
 
 // Actions
 const mintCharacterNFTAction = (characterId) => async () => {
   try {
     if (gameContract) {
+            /*
+       * Show our loading indicator
+       */
+      setMintingCharacter(true);
       console.log('Minting character in progress...');
       const mintTxn = await gameContract.mintCharacterNFT(characterId);
       await mintTxn.wait();
       console.log('mintTxn:', mintTxn);
+            /*
+       * Hide our loading indicator when minting is finished
+       */
+      setMintingCharacter(false);
     }
   } catch (error) {
     console.warn('MintCharacterAction Error:', error);
+        /*
+     * If there is a problem, hide the loading indicator as well
+     */
+    setMintingCharacter(false);
   }
 };
 
